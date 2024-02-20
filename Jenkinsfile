@@ -7,7 +7,7 @@ pipeline{
   stages{
     stage('Deploy to Remote'){
       steps{
-        sh 'scp ${WORKSPACE}/* clg-staging@${staging_server}:/srv/users/clg-staging/apps/ifebill/public/test/'
+        sh 'scp -o StrictHostKeyChecking=no ${WORKSPACE}/* clg-staging@${staging_server}:/srv/users/clg-staging/apps/ifebill/public/test/'
       }
     }
   }
