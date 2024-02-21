@@ -1,8 +1,6 @@
-# Ignore all  files in application folder
-application/
-
 # Ignore a specific file inside a specific folder
 module/samplefile.txt
+application/sample.php
 
 # Ignore temporary files
 *.tmp
