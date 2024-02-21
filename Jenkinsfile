@@ -20,7 +20,7 @@ pipeline {
                                 remoteDirectory: '/srv/users/clg-staging/apps/ifebill/public/test/',
                                 remoteDirectorySDF: false,
                                 removePrefix: '',
-                                sourceFiles: '**/*.html, **/*.css, **/*.php, **/*.js' // HTML, CSS, PHP, और JS फ़ाइलें जोड़ें
+                                sourceFiles: '**/*.html, **/*.css, **/*.php, **/*.js' 
                             )],
                             usePromotionTimestamp: false,
                             useWorkspaceInPromotion: false,
