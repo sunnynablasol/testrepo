@@ -1,21 +1,11 @@
 pipeline {
-  agent any
-  environment {
-    staging_server = "165.227.223.121"
-    ssh_private_key = credentials('JenkinsServer-Private-Key')
-  }
+    agent any
 
-  stages {
-    stage('Deploy to Remote') {
-      steps {
-        script {
-          // Define the private key file path
-          def privateKeyFile = "${ssh_private_key}"
-
-          // Execute the scp command using ssh with private key authentication
-          sh "ssh -i ${privateKeyFile} clg-staging@${staging_server} 'rsync -avz ${WORKSPACE}/ clg-staging@${staging_server}:/srv/users/clg-staging/apps/ifebill/public/test/'"
+    stages {
+        stage('Deploye PHP Application') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'CLG-Staging-CI-IFEBILL', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/srv/users/clg-staging/apps/ifebill/public/test/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '**/*.html')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
         }
-      }
     }
-  }
 }
