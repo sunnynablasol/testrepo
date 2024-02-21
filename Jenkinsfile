@@ -13,7 +13,7 @@ pipeline {
           def privateKeyFile = "${env.JENKINS_HOME}/.ssh/${ssh_private_key}"
 
           // Execute the scp command using ssh with private key authentication
-          sh "ssh -i ${privateKeyFile} clg-staging@${staging_server} 'rsync -avz ${WORKSPACE}/ username@${staging_server}:/srv/users/clg-staging/apps/ifebill/public/test/'"
+          sh "ssh -i ${privateKeyFile} clg-staging@${staging_server} 'rsync -avz ${WORKSPACE}/ clg-staging@${staging_server}:/srv/users/clg-staging/apps/ifebill/public/test/'"
         }
       }
     }
