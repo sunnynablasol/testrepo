@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Deploye PHP Application') {
+        stage('Deploy PHP Application') {
             steps {
                 script {
                    
