@@ -2,9 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Deploye PHP Application') {
+        stage('Deploy PHP Application') {
             steps {
                 script {
+                    // Folders jo skip kiye jayenge
+                    def skippedFolders = ['skip1', 'skip2']
+                    // Remote directory
+                    def remoteDir = '/srv/users/clg-staging/apps/ifebill/public/test/'
+
                     sshPublisher(
                         publishers: [sshPublisherDesc(
                             configName: 'CLG-Staging-CI-IFEBILL',
@@ -16,19 +21,23 @@ pipeline {
                                 makeEmptyDirs: false,
                                 noDefaultExcludes: false,
                                 patternSeparator: '[, ]+',
-                                remoteDirectory: '/srv/users/clg-staging/apps/ifebill/public/test/',
+                                remoteDirectory: remoteDir,
                                 remoteDirectorySDF: false,
                                 removePrefix: '',
-                                sourceFiles: '/.html, **/.css, */.php, */.js',
-                                excludedFiles: 'skip1//, skip2//' // Skip folder1 and folder2
+                                sourceFiles: "**/*.html, **/*.css, **/*.php, **/*.js" 
                             )],
                             usePromotionTimestamp: false,
                             useWorkspaceInPromotion: false,
                             verbose: false
                         )]
-                    )
+                    ) {
+                        // Skipped folders ko filter karna
+                        sourceFiles = sourceFiles.findAll { filePath ->
+                            !skippedFolders.any { folder -> filePath.startsWith(folder) }
+                        }
+                    }
                 }
             }
-        }
-    }
+        }
+    }
 }
