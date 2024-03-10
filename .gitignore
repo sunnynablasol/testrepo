@@ -1,6 +1,6 @@
 # Ingore a complete folder
-skip1/*.*
-skip2/*.*
+skip1/*.php
+skip2/*.php
 
 # Ignore a specific file inside a specific folder
 module/samplefile.txt
