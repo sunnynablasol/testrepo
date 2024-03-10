@@ -18,7 +18,7 @@ pipeline {
                             transfers: [sshTransfer(
                                 cleanRemote: false,
                                 execCommand: rsyncCommand,
-                                execTimeout: 600000,
+                                execTimeout: 120000,
                                 flatten: false,
                                 makeEmptyDirs: false,
                                 noDefaultExcludes: false,
