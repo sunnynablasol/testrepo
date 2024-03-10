@@ -2,12 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Deploy PHP Application') {
+        stage('Deploye PHP Application') {
             steps {
                 script {
-                    def skippedFolders = ['skip1', 'skip2']
-                    def remoteDir = '/srv/users/clg-staging/apps/ifebill/public/test/'
-
                     sshPublisher(
                         publishers: [sshPublisherDesc(
                             configName: 'CLG-Staging-CI-IFEBILL',
@@ -19,10 +16,11 @@ pipeline {
                                 makeEmptyDirs: false,
                                 noDefaultExcludes: false,
                                 patternSeparator: '[, ]+',
-                                remoteDirectory: remoteDir,
+                                remoteDirectory: '/srv/users/clg-staging/apps/ifebill/public/test/',
                                 remoteDirectorySDF: false,
                                 removePrefix: '',
-                                sourceFiles: "**/*.html, **/*.css, **/*.php, **/*.js, !{skippedFolders.join(',')}" 
+                                sourceFiles: '/.html, **/.css, */.php, */.js',
+                                excludedFiles: 'skip1//, skip2//' // Skip folder1 and folder2
                             )],
                             usePromotionTimestamp: false,
                             useWorkspaceInPromotion: false,
@@ -31,6 +29,6 @@ pipeline {
                     )
                 }
             }
-        }
-    }
+        }
+    }
 }
