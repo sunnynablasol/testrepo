@@ -5,17 +5,19 @@ pipeline {
         stage('Deploy PHP Application') {
             steps {
                 script {
-                    // Folders jo skip kiye jayenge
-                    def skippedFolders = ['skip1', 'skip2']
                     // Remote directory
                     def remoteDir = '/srv/users/clg-staging/apps/ifebill/public/test/'
 
+                    // rsync command banao
+                    def rsyncCommand = "rsync -avz --exclude=skip1/ --exclude=skip2/ --include='*/' --include='*.html' --include='*.css' --include='*.php' --include='*.js' --exclude='*' ./ ${remoteDir}"
+
+                    // sshPublisher ke through rsync command ko execute karo
                     sshPublisher(
                         publishers: [sshPublisherDesc(
                             configName: 'CLG-Staging-CI-IFEBILL',
                             transfers: [sshTransfer(
                                 cleanRemote: false,
-                                execCommand: '',
+                                execCommand: rsyncCommand,
                                 execTimeout: 120000,
                                 flatten: false,
                                 makeEmptyDirs: false,
@@ -23,19 +25,13 @@ pipeline {
                                 patternSeparator: '[, ]+',
                                 remoteDirectory: remoteDir,
                                 remoteDirectorySDF: false,
-                                removePrefix: '',
-                                sourceFiles: "**/*.html, **/*.css, **/*.php, **/*.js" 
+                                removePrefix: ''
                             )],
                             usePromotionTimestamp: false,
                             useWorkspaceInPromotion: false,
                             verbose: false
                         )]
-                    ) {
-                        // Skipped folders ko filter karna
-                        sourceFiles = sourceFiles.findAll { filePath ->
-                            !skippedFolders.any { folder -> filePath.startsWith(folder) }
-                        }
-                    }
+                    )
                 }
             }
         }
