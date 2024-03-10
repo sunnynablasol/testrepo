@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Git repository se source code download hua directory
-                    def sourceDir = './' 
+                    def sourceDir = '/var/lib/jenkins/workspace/test pipeline 2' 
 
                     // Remote directory - 'test' folder ka path
                     def remoteDir = '/srv/users/clg-staging/apps/ifebill/public/test/'
