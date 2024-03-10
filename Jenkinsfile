@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     // Production Server ko Update karein
-                    updateProductionServer('folder1', 'folder2')
+                    updateProductionServer('skip1/', 'skip2/', 'skip1', 'skip2')
                 }
             }
         }
