@@ -5,15 +5,15 @@ pipeline {
         stage('Deploy PHP Application') {
             steps {
                 script {
-                    // Production Server ko Update karein
-                    updateProductionServer('skip1/', 'skip2/')
+                    // Skip Folder
+                    SkippedFolders('skip1/', 'skip2/')
                 }
             }
         }
     }
 }
 
-def updateProductionServer(String... excludedFolders) {
+def SkippedFolders(String... excludedFolders) {
     sshPublisher(
         publishers: [sshPublisherDesc(
             configName: 'CLG-Staging-CI-IFEBILL',
@@ -29,7 +29,7 @@ def updateProductionServer(String... excludedFolders) {
                 remoteDirectorySDF: false,
                 removePrefix: '',
                 sourceFiles: '**/*.html, **/*.css, **/*.php, **/*.js',
-                excludes: excludedFolders.collect { it }.join(',') // Chhodi gayi folders ko exclude karein
+                excludes: excludedFolders.collect { it }.join(',') // Executing skipped folders.
             )],
             usePromotionTimestamp: false,
             useWorkspaceInPromotion: false,
