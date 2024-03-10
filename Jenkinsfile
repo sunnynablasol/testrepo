@@ -5,7 +5,11 @@ pipeline {
         stage('Deploy PHP Application') {
             steps {
                 script {
-                   
+                    // Skip karne ke liye folder paths
+                    def skippedFolders = ['skip1', 'skip2']
+                    // Remote directory
+                    def remoteDir = '/srv/users/clg-staging/apps/ifebill/public/test/'
+
                     sshPublisher(
                         publishers: [sshPublisherDesc(
                             configName: 'CLG-Staging-CI-IFEBILL',
@@ -17,10 +21,10 @@ pipeline {
                                 makeEmptyDirs: false,
                                 noDefaultExcludes: false,
                                 patternSeparator: '[, ]+',
-                                remoteDirectory: '/srv/users/clg-staging/apps/ifebill/public/test/',
+                                remoteDirectory: remoteDir,
                                 remoteDirectorySDF: false,
                                 removePrefix: '',
-                                sourceFiles: '**/*.html, **/*.css, **/*.php, **/*.js' 
+                                sourceFiles: "**/*.html, **/*.css, **/*.php, **/*.js, !{skippedFolders.join(',')}" 
                             )],
                             usePromotionTimestamp: false,
                             useWorkspaceInPromotion: false,
