@@ -11,14 +11,17 @@ pipeline {
         stage('Deploy PHP Application') {
             steps {
                 script {
-                    // Remote directory
+                    // Git repository se source code download hua directory
+                    def sourceDir = './' 
+
+                    // Remote directory - 'test' folder ka path
                     def remoteDir = '/srv/users/clg-staging/apps/ifebill/public/test/'
 
                     // Exclude karne wale folders ka list
                     def excludedFolders = " --exclude=skip1/ --exclude=skip2/*"
 
                     // rsync command banao
-                    def rsyncCommand = "rsync -avz ${excludedFolders} --include='*/' --include='*.html' --include='*.css' --include='*.php' --include='*.js' --exclude='*' ./ ${remoteDir}"
+                    def rsyncCommand = "rsync -avz ${excludedFolders} --include='*/' --include='*.html' --include='*.css' --include='*.php' --include='*.js' --exclude='*' ${sourceDir} ${remoteDir}"
 
                     // sshPublisher ke through rsync command ko execute karo
                     sshPublisher(
