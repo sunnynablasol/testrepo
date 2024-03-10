@@ -5,9 +5,7 @@ pipeline {
         stage('Deploy PHP Application') {
             steps {
                 script {
-                    // Skip karne ke liye folder paths
                     def skippedFolders = ['skip1', 'skip2']
-                    // Remote directory
                     def remoteDir = '/srv/users/clg-staging/apps/ifebill/public/test/'
 
                     sshPublisher(
