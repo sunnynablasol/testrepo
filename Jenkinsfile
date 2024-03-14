@@ -5,15 +5,14 @@ pipeline {
         stage('Deploy PHP Application') {
             steps {
                 script {
-                    // Skip Folder
-                    SkippedFolders('skip1/', 'skip2/')
+                    UpdateFolders('application/', 'module/')
                 }
             }
         }
     }
 }
 
-def SkippedFolders(String... excludedFolders) {
+def UpdateFolders(String... includedFolders) {
     sshPublisher(
         publishers: [sshPublisherDesc(
             configName: 'CLG-Staging-CI-IFEBILL',
@@ -28,8 +27,8 @@ def SkippedFolders(String... excludedFolders) {
                 remoteDirectory: '/srv/users/clg-staging/apps/ifebill/public/test/',
                 remoteDirectorySDF: false,
                 removePrefix: '',
-                sourceFiles: '**/*.html, **/*.css, **/*.php, **/*.js',
-                excludes: excludedFolders.collect { it }.join(',') // Executing skipped folders.
+                sourceFiles: includedFolders.collect { it + '/**/*.html,' + it + '/**/*.css,' + it + '/**/*.php,' + it + '/**/*.js' }.join(','),
+                excludes: ''
             )],
             usePromotionTimestamp: false,
             useWorkspaceInPromotion: false,
